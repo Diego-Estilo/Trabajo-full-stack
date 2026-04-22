@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GameHub - Tu Tienda de Videojuegos</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Header y Navegación -->
+    <header>
+        <nav class="navbar">
+            <div class="container">
+                <div class="logo">
+                    <h1>🎮 GameHub</h1>
+                </div>
+                <ul class="nav-links">
+                    <li><a href="#inicio">Inicio</a></li>
+                    <li><a href="#juegos">Juegos</a></li>
+                    <li><a href="#promociones">Promociones</a></li>
+                    <li><a href="#contacto">Contacto</a></li>
+                </ul>
+                <div class="carrito-icon">
+                    <span>🛒</span>
+                    <span class="carrito-count">0</span>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="inicio">
+        <div class="hero-content">
+            <h2>Bienvenido a GameHub</h2>
+            <p>La mejor plataforma para comprar videojuegos exclusivos</p>
+            <button class="btn-primary" onclick="scrollToSection('juegos')">Explorar Juegos</button>
+        </div>
+    </section>
+
+    <!-- Sección de Juegos -->
+    <section class="juegos-section" id="juegos">
+        <div class="container">
+            <h2>Juegos Destacados</h2>
+            <div class="filtros">
+                <button class="filtro-btn activo" onclick="filtrarGenero('todos')">Todos</button>
+                <button class="filtro-btn" onclick="filtrarGenero('accion')">Acción</button>
+                <button class="filtro-btn" onclick="filtrarGenero('rpg')">RPG</button>
+                <button class="filtro-btn" onclick="filtrarGenero('aventura')">Aventura</button>
+            </div>
+
+            <div class="juegos-grid" id="juegosGrid">
+                <!-- Los juegos se cargan aquí con JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección de Promociones -->
+    <section class="promociones-section" id="promociones">
+        <div class="container">
+            <h2>Promociones Especiales</h2>
+            <div class="promociones-grid">
+                <div class="promo-card">
+                    <div class="promo-badge">-30%</div>
+                    <h3>Oferta de Semana</h3>
+                    <p>Descuento en juegos AAA seleccionados</p>
+                </div>
+                <div class="promo-card">
+                    <div class="promo-badge">-50%</div>
+                    <h3>Bundle Especial</h3>
+                    <p>Compra 2 juegos y obtén descuento adicional</p>
+                </div>
+                <div class="promo-card">
+                    <div class="promo-badge">Gratis</div>
+                    <h3>Juego del Mes</h3>
+                    <p>Descarga un juego completamente gratis</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección de Características -->
+    <section class="features">
+        <div class="container">
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">⚡</div>
+                    <h3>Descarga Rápida</h3>
+                    <p>Servidores optimizados para velocidades máximas</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🔒</div>
+                    <h3>100% Seguro</h3>
+                    <p>Tus datos están protegidos con encriptación SSL</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">💳</div>
+                    <h3>Múltiples Pagos</h3>
+                    <p>Tarjeta, PayPal, criptomonedas y más</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🎁</div>
+                    <h3>Soporte 24/7</h3>
+                    <p>Ayuda disponible en cualquier momento</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Newsletter -->
+    <section class="newsletter">
+        <div class="container">
+            <h2>Suscríbete a Nuestro Newsletter</h2>
+            <p>Recibe las mejores ofertas y noticias de videojuegos</p>
+            <form class="newsletter-form" onsubmit="suscribirse(event)">
+                <input type="email" placeholder="Tu correo electrónico" required>
+                <button type="submit" class="btn-primary">Suscribirse</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Footer y Contacto -->
+    <footer id="contacto">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>GameHub</h4>
+                    <p>Tu tienda de videojuegos confiable</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Enlaces Rápidos</h4>
+                    <ul>
+                        <li><a href="#inicio">Inicio</a></li>
+                        <li><a href="#juegos">Juegos</a></li>
+                        <li><a href="#promociones">Promociones</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Contacto</h4>
+                    <p>📧 info@gamehub.com</p>
+                    <p>📱 +34 911 234 567</p>
+                    <p>📍 Madrid, España</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Síguenos</h4>
+                    <div class="social-links">
+                        <a href="#" class="social-icon">f</a>
+                        <a href="#" class="social-icon">𝕏</a>
+                        <a href="#" class="social-icon">📷</a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 GameHub. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Modal del Carrito -->
+    <div class="modal" id="carritoModal">
+        <div class="modal-content">
+            <span class="close" onclick="cerrarCarrito()">&times;</span>
+            <h2>Mi Carrito</h2>
+            <div id="carritoItems"></div>
+            <div class="modal-total">
+                <h3>Total: $<span id="carritoTotal">0</span></h3>
+            </div>
+            <button class="btn-primary" style="width: 100%; margin-top: 20px;">Proceder al Pago</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

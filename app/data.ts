@@ -1,0 +1,89 @@
+import { Game } from './types';
+
+export const juegos: Game[] = [
+  {
+    id: 1,
+    titulo: 'Cyberpunk 2077',
+    genero: 'accion',
+    precio: 59.99,
+    imagen: '🎮',
+    descripcion:
+      'Un futuro distópico te espera en esta aventura de rol de acción.',
+    calificacion: '★★★★★',
+  },
+  {
+    id: 2,
+    titulo: 'Elden Ring',
+    genero: 'rpg',
+    precio: 59.99,
+    imagen: '⚔️',
+    descripcion: 'Adéntrate en un mundo de fantasía lleno de desafíos épicos.',
+    calificacion: '★★★★★',
+  },
+  {
+    id: 3,
+    titulo: 'The Legend of Zelda',
+    genero: 'aventura',
+    precio: 59.99,
+    imagen: '🗡️',
+    descripcion:
+      'La aventura clásica que todos esperaban en la nueva generación.',
+    calificacion: '★★★★★',
+  },
+  {
+    id: 4,
+    titulo: 'Hollow Knight',
+    genero: 'accion',
+    precio: 14.99,
+    imagen: '🦗',
+    descripcion: 'Un juego de acción metroidvania desafiante y adictivo.',
+    calificacion: '★★★★☆',
+  },
+  {
+    id: 5,
+    titulo: "Baldur's Gate 3",
+    genero: 'rpg',
+    precio: 59.99,
+    imagen: '🐉',
+    descripcion:
+      'La máxima expresión del RPG de fantasía medieval con miles de opciones.',
+    calificacion: '★★★★★',
+  },
+  {
+    id: 6,
+    titulo: 'Uncharted 4',
+    genero: 'aventura',
+    precio: 39.99,
+    imagen: '🗺️',
+    descripcion:
+      'La conclusión épica de la saga Uncharted con gráficos espectaculares.',
+    calificacion: '★★★★★',
+  },
+  {
+    id: 7,
+    titulo: 'Dark Souls 3',
+    genero: 'accion',
+    precio: 49.99,
+    imagen: '💀',
+    descripcion: 'El desafío definitivo para jugadores experimentados.',
+    calificacion: '★★★★★',
+  },
+  {
+    id: 8,
+    titulo: 'The Witcher 3',
+    genero: 'rpg',
+    precio: 39.99,
+    imagen: '🐺',
+    descripcion: 'Una epopeya de fantasía con miles de horas de contenido.',
+    calificacion: '★★★★★',
+  },
+  {
+    id: 9,
+    titulo: 'Tomb Raider',
+    genero: 'aventura',
+    precio: 29.99,
+    imagen: '👩‍🔬',
+    descripcion: 'Acompaña a Lara en una emocionante aventura arqueológica.',
+    calificacion: '★★★★☆',
+  },
+];
