@@ -20,6 +20,15 @@ export const juegos: Game[] = [
     descripcion: 'Adéntrate en un mundo de fantasía lleno de desafíos épicos.',
     calificacion: '★★★★★',
   },
+    {
+    id: 2,
+    titulo: 'Elden Ring',
+    genero: 'rpg',
+    precio: 59.99,
+    imagen: '⚔️',
+    descripcion: 'Adéntrate en un mundo de fantasía lleno de desafíos épicos.',
+    calificacion: '★★★★★',
+  },
   {
     id: 3,
     titulo: 'The Legend of Zelda',
