@@ -86,4 +86,18 @@ export const juegos: Game[] = [
     descripcion: 'Acompaña a Lara en una emocionante aventura arqueológica.',
     calificacion: '★★★★☆',
   },
+  
+    {
+    id: 10,
+    titulo: 'Hollow Knight: Silksong',
+    genero: 'accion',
+    precio: 29.99,
+    imagen: '🕷️',
+    descripcion: 'Explora un reino vasto y antiguo en la esperada secuela del galardonado metroidvania.',
+    calificacion: '★★★★★',
+  },
+  
+
+  
+
 ];
