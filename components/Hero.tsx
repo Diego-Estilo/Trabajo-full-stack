@@ -1,100 +1,109 @@
 export default function Hero() {
   const scrollToSection = (id: string) => {
     const element = document.getElementById(id);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
-    }
+    if (element) element.scrollIntoView({ behavior: 'smooth' });
   };
 
   return (
     <section
       id="inicio"
-      className="relative min-h-screen bg-gradient-to-b from-slate-900 via-purple-900 to-slate-900 text-white flex items-center justify-center overflow-hidden"
+      className="relative min-h-screen bg-[#050c1a] text-white flex items-center justify-center overflow-hidden"
     >
-      {/* Fondo animado */}
-      <div className="absolute inset-0 overflow-hidden">
-        {/* Círculos decorativos con glow */}
-        <div className="absolute -top-40 -left-40 w-80 h-80 bg-cyan-500/30 rounded-full blur-3xl animate-pulse-glow"></div>
-        <div
-          className="absolute -bottom-40 -right-40 w-96 h-96 bg-pink-500/20 rounded-full blur-3xl animate-pulse-glow"
-          style={{ animationDelay: '1s' }}
-        ></div>
-        <div className="absolute top-1/2 left-1/2 w-72 h-72 bg-purple-500/20 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2 animate-float"></div>
+      {/* Blobs de fondo */}
+      <div className="absolute -top-32 -left-40 w-[500px] h-[500px] bg-cyan-500/10 rounded-full blur-[100px] animate-pulse" />
+      <div className="absolute -bottom-40 -right-40 w-[600px] h-[600px] bg-pink-500/8 rounded-full blur-[100px] animate-pulse [animation-delay:1.5s]" />
+      <div className="absolute top-1/2 left-1/2 w-[350px] h-[350px] bg-purple-500/10 rounded-full blur-[80px] -translate-x-1/2 -translate-y-1/2 animate-pulse [animation-delay:.8s]" />
 
-        {/* Grid pattern */}
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-cyan-500/5 to-transparent opacity-20"></div>
+      {/* Grid */}
+      <div
+        className="absolute inset-0 opacity-40"
+        style={{
+          backgroundImage:
+            'linear-gradient(rgba(0,229,255,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(0,229,255,.04) 1px,transparent 1px)',
+          backgroundSize: '50px 50px',
+        }}
+      />
+
+      {/* Líneas de escaneo */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          background:
+            'repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,229,255,.012) 2px,rgba(0,229,255,.012) 4px)',
+        }}
+      />
+
+      {/* Badge de teléfono */}
+      <div className="absolute top-6 right-6 z-20 hidden sm:flex items-center gap-2 bg-[#0a1628]/80 border border-cyan-500/20 rounded-xl px-4 py-2 text-sm text-cyan-100/70 backdrop-blur-md">
+        <span>📞</span>
+        <span>+51 999 888 777 &nbsp;|&nbsp; Atención 24/7</span>
       </div>
 
-      {/* Contenido */}
-      <div className="relative z-10 text-center px-4 max-w-4xl">
-        {/* Etiqueta superior */}
-        <div className="mb-6 inline-block">
-          <span className="px-4 py-2 border border-cyan-500/50 rounded-full text-cyan-400 text-sm font-mono animate-flicker">
-            ⚡ NEXT GENERATION GAMING STORE
-          </span>
+      {/* Contenido principal */}
+      <div className="relative z-10 text-center px-6 max-w-4xl w-full">
+
+        {/* Badge superior */}
+        <div className="mb-8 inline-flex items-center gap-2 border border-cyan-500/40 rounded-full px-5 py-2 text-cyan-400 text-sm tracking-widest bg-cyan-500/5 font-mono">
+          <span className="w-2 h-2 rounded-full bg-cyan-400 animate-ping" />
+          TIENDA DE VIDEOJUEGOS LÍDER EN PERÚ
         </div>
 
-        {/* Título principal */}
-        <h1 className="text-6xl md:text-8xl font-black mb-6 leading-tight glow-text">
+        {/* Título */}
+        <h1 className="font-black leading-none mb-6 text-7xl md:text-9xl tracking-tight">
           GAME
-          <span className="block glow-text-pink mt-2">HUB</span>
+          <span className="block bg-gradient-to-r from-cyan-400 to-pink-500 bg-clip-text text-transparent">
+            HUB
+          </span>
         </h1>
 
         {/* Subtítulo */}
-        <p className="text-xl md:text-2xl mb-8 text-cyan-200 font-mono">
-          {'> '} La plataforma más futurista para videojuegos exclusivos {' <'}
+        <p className="text-lg md:text-xl text-blue-100/70 mb-4 font-medium max-w-2xl mx-auto">
+          La plataforma más completa para comprar videojuegos en Perú.<br />
+          Envíos a todo el país · Pago en soles · Garantía real.
         </p>
 
-        {/* Descripción */}
-        <p className="text-lg md:text-xl mb-12 text-purple-300/80 max-w-2xl mx-auto">
-          Descubre una nueva dimensión en las compras de videojuegos.
-          Experiencia inmersiva, precios increíbles y tecnología del futuro.
-        </p>
+        {/* Barra de precios */}
+        <div className="inline-flex items-center gap-4 bg-gradient-to-r from-cyan-500/8 to-pink-500/8 border border-yellow-400/20 rounded-xl px-6 py-3 mb-10 text-sm text-white/80">
+          <span>🎮 Juegos desde</span>
+          <span className="text-yellow-400 font-black text-xl">S/ 19.90</span>
+          <div className="w-px h-6 bg-white/10" />
+          <span>💳 Acepta Yape, Plin y tarjetas</span>
+        </div>
 
         {/* Botones */}
-        <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
+        <div className="flex flex-col sm:flex-row gap-3 justify-center mb-12">
           <button
             onClick={() => scrollToSection('juegos')}
-            className="btn-neon btn-neon-cyan text-lg px-8 py-4 rounded-lg font-bold relative group overflow-hidden"
+            className="px-8 py-4 bg-gradient-to-r from-cyan-500 to-blue-600 rounded-xl font-bold text-white shadow-[0_0_24px_rgba(0,229,255,.3)] hover:shadow-[0_0_36px_rgba(0,229,255,.5)] hover:-translate-y-0.5 transition-all"
           >
-            <span className="relative z-10">EXPLORAR JUEGOS</span>
-            <div className="absolute inset-0 bg-gradient-to-r from-cyan-500 to-blue-500 opacity-0 group-hover:opacity-20 transition"></div>
+            🕹️ EXPLORAR JUEGOS
           </button>
-
-          <button className="btn-neon btn-neon-pink text-lg px-8 py-4 rounded-lg font-bold relative group overflow-hidden">
-            <span className="relative z-10">VER OFERTAS</span>
-            <div className="absolute inset-0 bg-gradient-to-r from-pink-500 to-purple-500 opacity-0 group-hover:opacity-20 transition"></div>
+          <button className="px-8 py-4 border border-pink-500/50 rounded-xl font-bold text-white hover:border-pink-400 hover:shadow-[0_0_24px_rgba(255,45,120,.3)] hover:-translate-y-0.5 transition-all">
+            🔥 VER OFERTAS
+          </button>
+          <button className="px-6 py-4 border border-white/15 rounded-xl font-semibold text-white/70 hover:border-white/30 hover:text-white transition-all text-sm">
+            📞 Contáctanos
           </button>
         </div>
 
         {/* Stats */}
-        <div className="grid grid-cols-3 gap-4 md:gap-8 pt-12 border-t border-cyan-500/30">
+        <div className="grid grid-cols-3 gap-4 pt-8 border-t border-cyan-500/15">
           {[
-            { num: '2.5K+', label: 'Juegos' },
-            { num: '50K+', label: 'Usuarios' },
-            { num: '24/7', label: 'Soporte' },
-          ].map((stat, idx) => (
-            <div key={idx} className="text-center">
-              <div className="text-3xl md:text-4xl font-black text-cyan-400 glow-text">
+            { num: '2,500+', label: 'Títulos disponibles' },
+            { num: '50K+', label: 'Clientes satisfechos' },
+            { num: '24/7', label: 'Soporte en línea' },
+          ].map((stat, i) => (
+            <div key={i} className="text-center">
+              <div className="text-3xl md:text-4xl font-black text-cyan-400 drop-shadow-[0_0_12px_rgba(0,229,255,.4)]">
                 {stat.num}
               </div>
-              <div className="text-sm md:text-base text-purple-300 font-mono mt-2">
+              <div className="text-xs text-blue-300/50 uppercase tracking-widest mt-1">
                 {stat.label}
               </div>
             </div>
           ))}
         </div>
       </div>
-
-      {/* Efecto de líneas de escaneo */}
-      <div
-        className="absolute inset-0 pointer-events-none bg-repeat-y"
-        style={{
-          backgroundImage:
-            'linear-gradient(0deg, rgba(100, 200, 255, 0.03) 1px, transparent 1px)',
-          backgroundSize: '100% 2px',
-        }}
-      ></div>
     </section>
   );
 }
