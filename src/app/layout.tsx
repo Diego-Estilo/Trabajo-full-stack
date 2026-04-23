@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import './globals.css';
-import { AuthProvider } from './auth-context';
+import { AuthProvider } from '@/features/auth/AuthContext';
 
 export const metadata: Metadata = {
   title: 'GameHub - Tu Tienda de Videojuegos',

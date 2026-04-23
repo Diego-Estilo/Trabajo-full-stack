@@ -1,6 +1,7 @@
 'use client';
 
-import { CartItem } from '@/app/types';
+import { CartItem } from '@/types';
+import { ShoppingCart, X } from 'lucide-react';
 
 interface CartModalProps {
   isOpen: boolean;
@@ -38,9 +39,9 @@ export default function CartModal({
           {/* Close button */}
           <button
             onClick={onClose}
-            className="absolute top-4 right-4 text-2xl text-cyan-400 hover:text-pink-400 transition z-10"
+            className="absolute top-4 right-4 text-2xl text-neon hover:text-muted transition z-10"
           >
-            ✕
+            <X className="w-6 h-6" />
           </button>
 
           <div className="p-6 flex flex-col h-full overflow-hidden">
@@ -51,8 +52,8 @@ export default function CartModal({
 
             {items.length === 0 ? (
               <div className="text-center py-12">
-                <p className="text-3xl mb-3">🛒</p>
-                <p className="text-purple-300/70">Tu carrito está vacío</p>
+                <ShoppingCart className="w-16 h-16 text-muted mx-auto mb-3" />
+                <p className="text-gray-400">Tu carrito está vacío</p>
               </div>
             ) : (
               <>
@@ -61,18 +62,18 @@ export default function CartModal({
                   {items.map((item) => (
                     <div
                       key={item.id}
-                      className="p-4 bg-slate-800/50 border border-cyan-500/30 rounded-lg hover:border-cyan-400 transition flex-shrink-0"
+                      className="p-4 bg-card/50 border border-neon/30 rounded-lg hover:border-neon transition flex-shrink-0"
                     >
                       <div className="flex justify-between items-start mb-2">
                         <div className="flex-1">
-                          <div className="font-bold text-cyan-100">
+                          <div className="font-bold text-white">
                             {item.titulo}
                           </div>
-                          <div className="text-xs text-purple-400 font-mono mt-1">
+                          <div className="text-xs text-gray-400 font-mono mt-1">
                             Cantidad: x{item.cantidad}
                           </div>
                         </div>
-                        <span className="text-xl font-black bg-gradient-to-r from-cyan-400 to-pink-400 bg-clip-text text-transparent">
+                        <span className="text-xl font-black bg-gradient-to-r from-neon to-muted bg-clip-text text-transparent">
                           ${(item.precio * item.cantidad).toFixed(2)}
                         </span>
                       </div>
@@ -87,19 +88,19 @@ export default function CartModal({
                 </div>
 
                 {/* Divider */}
-                <div className="h-px bg-gradient-to-r from-cyan-500/0 via-cyan-500/50 to-cyan-500/0 my-6 flex-shrink-0"></div>
+                <div className="h-px bg-gradient-to-r from-neon/0 via-neon/50 to-neon/0 my-6 flex-shrink-0"></div>
 
                 {/* Total - Fixed at bottom */}
                 <div className="mb-6 flex-shrink-0">
                   <div className="flex justify-between items-center mb-2">
-                    <span className="text-purple-300/70 font-mono">
+                    <span className="text-gray-400 font-mono">
                       Subtotal:
                     </span>
-                    <span className="text-cyan-100">${total.toFixed(2)}</span>
+                    <span className="text-white">${total.toFixed(2)}</span>
                   </div>
                   <div className="flex justify-between items-center">
-                    <h3 className="text-lg font-black text-cyan-100">Total:</h3>
-                    <h3 className="text-2xl font-black bg-gradient-to-r from-cyan-400 to-pink-400 bg-clip-text text-transparent">
+                    <h3 className="text-lg font-black text-white">Total:</h3>
+                    <h3 className="text-2xl font-black bg-gradient-to-r from-neon to-muted bg-clip-text text-transparent">
                       ${total.toFixed(2)}
                     </h3>
                   </div>

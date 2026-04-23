@@ -1,7 +1,8 @@
 'use client';
 
-import { useAuth } from '@/app/auth-context';
+import { useAuth } from '@/features/auth/AuthContext';
 import { useState } from 'react';
+import { Package, Calendar, Check, Download, X, ArrowLeft } from 'lucide-react';
 
 interface OrdersModalProps {
   isOpen: boolean;
@@ -30,9 +31,9 @@ export default function OrdersModal({ isOpen, onClose }: OrdersModalProps) {
           {/* Close button */}
           <button
             onClick={onClose}
-            className="sticky top-4 right-4 float-right text-2xl text-cyan-400 hover:text-pink-400 transition z-10"
+            className="sticky top-4 right-4 float-right text-2xl text-neon hover:text-muted transition z-10"
           >
-            ✕
+            <X className="w-6 h-6" />
           </button>
 
           <div className="p-8">
@@ -42,14 +43,14 @@ export default function OrdersModal({ isOpen, onClose }: OrdersModalProps) {
                 <h2 className="text-3xl font-black mb-2 glow-text">
                   HISTORIAL <span className="glow-text-pink">COMPRAS</span>
                 </h2>
-                <p className="text-purple-400/70 font-mono text-sm mb-6">
+                <p className="text-gray-400 font-mono text-sm mb-6">
                   {`// Usuario: ${user?.name}`}
                 </p>
 
                 {orders.length === 0 ? (
                   <div className="text-center py-12">
-                    <div className="text-5xl mb-4">📦</div>
-                    <p className="text-purple-300/70 mb-4">
+                    <Package className="w-16 h-16 text-muted mx-auto mb-4" />
+                    <p className="text-gray-400 mb-4">
                       Aún no tienes compras
                     </p>
                     <button
@@ -65,28 +66,29 @@ export default function OrdersModal({ isOpen, onClose }: OrdersModalProps) {
                       <button
                         key={order.id}
                         onClick={() => setSelectedOrder(order.id)}
-                        className="card-neon rounded-xl p-4 w-full text-left hover:border-cyan-400 transition"
+                        className="card-neon rounded-xl p-4 w-full text-left hover:border-neon transition"
                       >
                         <div className="flex justify-between items-start mb-2">
                           <div>
-                            <div className="text-sm text-cyan-300 font-mono mb-1">
+                            <div className="text-sm text-neon font-mono mb-1">
                               {'> ORDEN #' + order.id.slice(0, 8)}
                             </div>
-                            <div className="text-xs text-purple-400 font-mono">
-                              📅 {order.date}
+                            <div className="text-xs text-gray-400 font-mono">
+                              <Calendar className="w-4 h-4 inline mr-1" />
+                              {order.date}
                             </div>
                           </div>
                           <div className="text-right">
-                            <div className="text-xs text-purple-400 font-mono mb-1">
+                            <div className="text-xs text-gray-400 font-mono mb-1">
                               {order.items.length} artículo
                               {order.items.length !== 1 ? 's' : ''}
                             </div>
-                            <div className="text-xl font-black bg-gradient-to-r from-cyan-400 to-pink-400 bg-clip-text text-transparent">
+                            <div className="text-xl font-black bg-gradient-to-r from-neon to-muted bg-clip-text text-transparent">
                               ${order.total.toFixed(2)}
                             </div>
                           </div>
                         </div>
-                        <div className="text-xs text-cyan-400/60 font-mono">
+                        <div className="text-xs text-neon/60 font-mono">
                           {'→ Haz click para ver detalles'}
                         </div>
                       </button>
@@ -99,9 +101,9 @@ export default function OrdersModal({ isOpen, onClose }: OrdersModalProps) {
                 {/* Detalle de orden */}
                 <button
                   onClick={() => setSelectedOrder(null)}
-                  className="text-cyan-400 hover:text-pink-400 font-mono text-sm mb-4 flex items-center gap-2"
+                  className="text-neon hover:text-muted font-mono text-sm mb-4 flex items-center gap-2"
                 >
-                  {'←'} Volver
+                  <ArrowLeft className="w-4 h-4" /> Volver
                 </button>
 
                 <h2 className="text-3xl font-black mb-2 glow-text-pink">
@@ -111,35 +113,37 @@ export default function OrdersModal({ isOpen, onClose }: OrdersModalProps) {
                   </span>
                 </h2>
 
-                <div className="space-y-2 mb-6 text-sm text-purple-400/70 font-mono">
-                  <p>📅 Fecha: {currentOrder.date}</p>
-                  <p>📦 Estado: ✓ COMPLETADA</p>
+                <div className="space-y-2 mb-6 text-sm text-gray-400 font-mono">
+                  <p><Calendar className="w-4 h-4 inline mr-1" />
+                              Fecha: {currentOrder.date}</p>
+                  <p><Package className="w-4 h-4 inline mr-1" />
+                              Estado: <Check className="w-4 h-4 inline text-neon" /> COMPLETADA</p>
                 </div>
 
                 {/* Items */}
                 <div className="mb-6">
-                  <h3 className="text-lg font-bold text-cyan-100 mb-3">
+                  <h3 className="text-lg font-bold text-white mb-3">
                     Productos:
                   </h3>
                   <div className="space-y-2">
                     {currentOrder.items.map((item, idx) => (
                       <div
                         key={idx}
-                        className="p-3 bg-slate-800/50 border border-cyan-500/30 rounded-lg flex justify-between items-center"
+                        className="p-3 bg-card/50 border border-neon/30 rounded-lg flex justify-between items-center"
                       >
                         <div>
-                          <div className="font-bold text-cyan-100 text-sm">
+                          <div className="font-bold text-white text-sm">
                             {item.titulo}
                           </div>
-                          <div className="text-xs text-purple-400 font-mono">
+                          <div className="text-xs text-gray-400 font-mono">
                             Cantidad: {item.cantidad}
                           </div>
                         </div>
                         <div className="text-right">
-                          <div className="text-xs text-purple-400 mb-1">
+                          <div className="text-xs text-gray-400 mb-1">
                             ${item.precio.toFixed(2)} c/u
                           </div>
-                          <div className="font-bold bg-gradient-to-r from-cyan-400 to-pink-400 bg-clip-text text-transparent">
+                          <div className="font-bold bg-gradient-to-r from-neon to-muted bg-clip-text text-transparent">
                             ${(item.precio * item.cantidad).toFixed(2)}
                           </div>
                         </div>
@@ -149,21 +153,21 @@ export default function OrdersModal({ isOpen, onClose }: OrdersModalProps) {
                 </div>
 
                 {/* Divider */}
-                <div className="h-px bg-gradient-to-r from-cyan-500/0 via-cyan-500/50 to-cyan-500/0 my-6"></div>
+                <div className="h-px bg-gradient-to-r from-neon/0 via-neon/50 to-neon/0 my-6"></div>
 
                 {/* Total */}
-                <div className="bg-slate-800/50 border border-cyan-500/30 rounded-xl p-4 mb-6">
-                  <div className="text-xs text-purple-400 font-mono mb-2">
+                <div className="bg-card/50 border border-neon/30 rounded-xl p-4 mb-6">
+                  <div className="text-xs text-gray-400 font-mono mb-2">
                     TOTAL DE LA ORDEN
                   </div>
-                  <div className="text-4xl font-black bg-gradient-to-r from-cyan-400 to-pink-400 bg-clip-text text-transparent">
+                  <div className="text-4xl font-black bg-gradient-to-r from-neon to-muted bg-clip-text text-transparent">
                     ${currentOrder.total.toFixed(2)}
                   </div>
                 </div>
 
                 {/* Botón descargar recibo */}
-                <button className="btn-neon btn-neon-cyan w-full py-3 rounded-lg font-black mb-3">
-                  📥 DESCARGAR RECIBO
+                <button className="btn-neon btn-neon-cyan w-full py-3 rounded-lg font-black mb-3 flex items-center justify-center gap-2">
+                  <Download className="w-5 h-5" /> DESCARGAR RECIBO
                 </button>
 
                 <button

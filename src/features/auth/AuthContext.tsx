@@ -6,94 +6,100 @@ import {
   useState,
   useEffect,
   ReactNode,
+  useCallback,
 } from 'react';
-
-interface User {
-  id: string;
-  email: string;
-  name: string;
-}
-
-interface Order {
-  id: string;
-  date: string;
-  items: Array<{
-    titulo: string;
-    precio: number;
-    cantidad: number;
-  }>;
-  total: number;
-}
+import { User, Order, CartItem } from '@/types';
 
 interface AuthContextType {
   user: User | null;
   isLoggedIn: boolean;
   orders: Order[];
+  isLoading: boolean;
   login: (email: string, password: string) => Promise<void>;
   register: (email: string, password: string, name: string) => Promise<void>;
   logout: () => void;
-  addOrder: (items: any[], total: number) => void;
+  addOrder: (items: CartItem[], total: number) => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
+
+const STORAGE_KEYS = {
+  USER: 'gamehub_user',
+  ORDERS: 'gamehub_orders',
+} as const;
+
+function generateId(): string {
+  return Math.random().toString(36).substring(2, 11);
+}
+
+function loadFromStorage<T>(key: string): T | null {
+  if (typeof window === 'undefined') return null;
+  const stored = localStorage.getItem(key);
+  return stored ? JSON.parse(stored) : null;
+}
+
+function saveToStorage<T>(key: string, value: T): void {
+  if (typeof window === 'undefined') return;
+  localStorage.setItem(key, JSON.stringify(value));
+}
+
+function removeFromStorage(key: string): void {
+  if (typeof window === 'undefined') return;
+  localStorage.removeItem(key);
+}
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [orders, setOrders] = useState<Order[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
-  // Cargar datos del localStorage al iniciar
   useEffect(() => {
-    const savedUser = localStorage.getItem('gamehub_user');
-    const savedOrders = localStorage.getItem('gamehub_orders');
+    const savedUser = loadFromStorage<User>(STORAGE_KEYS.USER);
+    const savedOrders = loadFromStorage<Order[]>(STORAGE_KEYS.ORDERS);
 
-    if (savedUser) {
-      setUser(JSON.parse(savedUser));
-    }
-    if (savedOrders) {
-      setOrders(JSON.parse(savedOrders));
-    }
+    if (savedUser) setUser(savedUser);
+    if (savedOrders) setOrders(savedOrders);
     setIsLoading(false);
   }, []);
 
-  const login = async (email: string, password: string) => {
-    // Simulamos login (en producción sería con backend)
-    if (!email || !password) throw new Error('Email y contraseña requeridos');
+  const login = useCallback(async (email: string, password: string) => {
+    if (!email || !password) {
+      throw new Error('Email y contraseña requeridos');
+    }
 
     const newUser: User = {
-      id: Math.random().toString(36).substr(2, 9),
+      id: generateId(),
       email,
       name: email.split('@')[0],
     };
 
     setUser(newUser);
-    localStorage.setItem('gamehub_user', JSON.stringify(newUser));
-  };
+    saveToStorage(STORAGE_KEYS.USER, newUser);
+  }, []);
 
-  const register = async (email: string, password: string, name: string) => {
-    // Simulamos registro (en producción sería con backend)
+  const register = useCallback(async (email: string, password: string, name: string) => {
     if (!email || !password || !name) {
       throw new Error('Todos los campos son requeridos');
     }
 
     const newUser: User = {
-      id: Math.random().toString(36).substr(2, 9),
+      id: generateId(),
       email,
       name,
     };
 
     setUser(newUser);
-    localStorage.setItem('gamehub_user', JSON.stringify(newUser));
-  };
+    saveToStorage(STORAGE_KEYS.USER, newUser);
+  }, []);
 
-  const logout = () => {
+  const logout = useCallback(() => {
     setUser(null);
-    localStorage.removeItem('gamehub_user');
-  };
+    removeFromStorage(STORAGE_KEYS.USER);
+  }, []);
 
-  const addOrder = (items: any[], total: number) => {
+  const addOrder = useCallback((items: CartItem[], total: number) => {
     const newOrder: Order = {
-      id: Math.random().toString(36).substr(2, 9),
+      id: generateId(),
       date: new Date().toLocaleDateString('es-ES'),
       items: items.map((item) => ({
         titulo: item.titulo,
@@ -105,8 +111,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     const updatedOrders = [...orders, newOrder];
     setOrders(updatedOrders);
-    localStorage.setItem('gamehub_orders', JSON.stringify(updatedOrders));
-  };
+    saveToStorage(STORAGE_KEYS.ORDERS, updatedOrders);
+  }, [orders]);
 
   if (isLoading) {
     return (
@@ -122,6 +128,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         user,
         isLoggedIn: !!user,
         orders,
+        isLoading,
         login,
         register,
         logout,
