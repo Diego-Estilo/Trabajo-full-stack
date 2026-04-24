@@ -9,124 +9,149 @@ import {
   useCallback,
 } from 'react';
 import { User, Order, CartItem } from '@/types';
+import { createClient } from '@/utils/supabase/client';
+import { User as SupabaseUser } from '@supabase/supabase-js';
 
 interface AuthContextType {
   user: User | null;
+  supabaseUser: SupabaseUser | null;
   isLoggedIn: boolean;
   orders: Order[];
   isLoading: boolean;
   login: (email: string, password: string) => Promise<void>;
   register: (email: string, password: string, name: string) => Promise<void>;
   logout: () => void;
-  addOrder: (items: CartItem[], total: number) => void;
+  addOrder: (items: CartItem[], total: number) => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-const STORAGE_KEYS = {
-  USER: 'gamehub_user',
-  ORDERS: 'gamehub_orders',
-} as const;
-
-function generateId(): string {
-  return Math.random().toString(36).substring(2, 11);
-}
-
-function loadFromStorage<T>(key: string): T | null {
-  if (typeof window === 'undefined') return null;
-  const stored = localStorage.getItem(key);
-  return stored ? JSON.parse(stored) : null;
-}
-
-function saveToStorage<T>(key: string, value: T): void {
-  if (typeof window === 'undefined') return;
-  localStorage.setItem(key, JSON.stringify(value));
-}
-
-function removeFromStorage(key: string): void {
-  if (typeof window === 'undefined') return;
-  localStorage.removeItem(key);
-}
-
 export function AuthProvider({ children }: { children: ReactNode }) {
+  const [supabaseUser, setSupabaseUser] = useState<SupabaseUser | null>(null);
   const [user, setUser] = useState<User | null>(null);
   const [orders, setOrders] = useState<Order[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  
+  const supabase = createClient();
 
   useEffect(() => {
-    const savedUser = loadFromStorage<User>(STORAGE_KEYS.USER);
-    const savedOrders = loadFromStorage<Order[]>(STORAGE_KEYS.ORDERS);
+    const getInitialSession = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      setSupabaseUser(session?.user ?? null);
+      if (session?.user) {
+        setUser({
+          id: session.user.id,
+          email: session.user.email!,
+          name: session.user.user_metadata?.name || session.user.email?.split('@')[0] || 'User'
+        });
+        fetchOrders(session.user.id);
+      }
+      setIsLoading(false);
+    };
 
-    if (savedUser) setUser(savedUser);
-    if (savedOrders) setOrders(savedOrders);
-    setIsLoading(false);
-  }, []);
+    getInitialSession();
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setSupabaseUser(session?.user ?? null);
+      if (session?.user) {
+        setUser({
+          id: session.user.id,
+          email: session.user.email!,
+          name: session.user.user_metadata?.name || session.user.email?.split('@')[0] || 'User'
+        });
+        fetchOrders(session.user.id);
+      } else {
+        setUser(null);
+        setOrders([]);
+      }
+    });
+
+    return () => subscription.unsubscribe();
+  }, [supabase]);
+
+  const fetchOrders = async (userId: string) => {
+    const { data, error } = await supabase
+      .from('orders')
+      .select('*, order_items(*)')
+      .eq('user_id', userId)
+      .order('created_at', { ascending: false });
+
+    if (!error && data) {
+      const formattedOrders: Order[] = data.map((o: any) => ({
+        id: o.id,
+        date: new Date(o.created_at).toLocaleDateString('es-ES'),
+        total: parseFloat(o.total_amount),
+        items: o.order_items.map((oi: any) => ({
+          titulo: oi.product_name || 'Producto', // We might need to join with products or store name in order_items
+          precio: parseFloat(oi.price_at_purchase),
+          cantidad: oi.quantity
+        }))
+      }));
+      setOrders(formattedOrders);
+    }
+  };
 
   const login = useCallback(async (email: string, password: string) => {
-    if (!email || !password) {
-      throw new Error('Email y contraseña requeridos');
-    }
-
-    const newUser: User = {
-      id: generateId(),
+    const { error } = await supabase.auth.signInWithPassword({
       email,
-      name: email.split('@')[0],
-    };
-
-    setUser(newUser);
-    saveToStorage(STORAGE_KEYS.USER, newUser);
-  }, []);
+      password,
+    });
+    if (error) throw error;
+  }, [supabase]);
 
   const register = useCallback(async (email: string, password: string, name: string) => {
-    if (!email || !password || !name) {
-      throw new Error('Todos los campos son requeridos');
-    }
-
-    const newUser: User = {
-      id: generateId(),
+    const { error } = await supabase.auth.signUp({
       email,
-      name,
-    };
+      password,
+      options: {
+        data: { name }
+      }
+    });
+    if (error) throw error;
+  }, [supabase]);
 
-    setUser(newUser);
-    saveToStorage(STORAGE_KEYS.USER, newUser);
-  }, []);
+  const logout = useCallback(async () => {
+    await supabase.auth.signOut();
+  }, [supabase]);
 
-  const logout = useCallback(() => {
-    setUser(null);
-    removeFromStorage(STORAGE_KEYS.USER);
-  }, []);
+  const addOrder = useCallback(async (items: CartItem[], total: number) => {
+    if (!supabaseUser) return;
 
-  const addOrder = useCallback((items: CartItem[], total: number) => {
-    const newOrder: Order = {
-      id: generateId(),
-      date: new Date().toLocaleDateString('es-ES'),
-      items: items.map((item) => ({
-        titulo: item.titulo,
-        precio: item.precio,
-        cantidad: item.cantidad,
-      })),
-      total,
-    };
+    const { data: orderData, error: orderError } = await supabase
+      .from('orders')
+      .insert({
+        user_id: supabaseUser.id,
+        total_amount: total,
+        status: 'completed'
+      })
+      .select()
+      .single();
 
-    const updatedOrders = [...orders, newOrder];
-    setOrders(updatedOrders);
-    saveToStorage(STORAGE_KEYS.ORDERS, updatedOrders);
-  }, [orders]);
+    if (orderError) throw orderError;
 
-  if (isLoading) {
-    return (
-      <div className="min-h-screen bg-slate-900 flex items-center justify-center text-cyan-400">
-        Cargando...
-      </div>
-    );
-  }
+    const orderItems = items.map(item => ({
+      order_id: orderData.id,
+      product_id: item.id.toString(),
+      product_name: item.titulo,
+      quantity: item.cantidad,
+      price_at_purchase: item.precio
+    }));
+
+    const { error: itemsError } = await supabase
+      .from('order_items')
+      .insert(orderItems);
+
+    if (itemsError) throw itemsError;
+    
+    fetchOrders(supabaseUser.id);
+  }, [supabase, supabaseUser]);
 
   return (
     <AuthContext.Provider
       value={{
         user,
-        isLoggedIn: !!user,
+        supabaseUser,
+        isLoggedIn: !!supabaseUser,
         orders,
         isLoading,
         login,

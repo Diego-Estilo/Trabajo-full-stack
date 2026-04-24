@@ -7,7 +7,7 @@ import { Sparkles, Trophy, Flame } from 'lucide-react';
 
 interface GamesSectionProps {
   games: Game[];
-  onAddToCart: (gameId: number) => void;
+  onAddToCart: (gameId: string | number) => void;
 }
 
 export default function GamesSection({ games, onAddToCart }: GamesSectionProps) {
@@ -23,7 +23,7 @@ export default function GamesSection({ games, onAddToCart }: GamesSectionProps) 
   const filteredGames = useMemo(() => {
     return activeFilter === 'todos'
       ? games
-      : games.filter((g) => g.genero.toLowerCase() === activeFilter);
+      : games.filter((g) => g.genero?.toLowerCase() === activeFilter);
   }, [activeFilter, games]);
 
   return (
@@ -40,7 +40,7 @@ export default function GamesSection({ games, onAddToCart }: GamesSectionProps) 
             <span className="text-gradient">PLAYLIST</span>
           </h2>
           <p className="text-white/40 font-medium">
-            Seleccionamos cuidadosamente cada título para garantizar que solo 
+            Seleccionamos cuidadosamente cada título para garantizar que solo
             las mejores experiencias lleguen a tu biblioteca virtual.
           </p>
         </div>
@@ -53,11 +53,10 @@ export default function GamesSection({ games, onAddToCart }: GamesSectionProps) 
               <button
                 key={cat.id}
                 onClick={() => setActiveFilter(cat.id)}
-                className={`flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-bold transition-all ${
-                  activeFilter === cat.id
-                    ? 'bg-neon text-black shadow-[0_0_20px_rgba(204,255,0,0.3)]'
-                    : 'text-white/60 hover:text-white hover:bg-white/5'
-                }`}
+                className={`flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-bold transition-all ${activeFilter === cat.id
+                  ? 'bg-neon text-black shadow-[0_0_20px_rgba(204,255,0,0.3)]'
+                  : 'text-white/60 hover:text-white hover:bg-white/5'
+                  }`}
               >
                 <Icon size={14} />
                 {cat.label.toUpperCase()}

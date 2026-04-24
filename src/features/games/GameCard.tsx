@@ -6,7 +6,7 @@ import Image from 'next/image';
 
 interface GameCardProps {
   juego: Game;
-  onAddToCart: (id: number) => void;
+  onAddToCart: (id: string | number) => void;
 }
 
 export default function GameCard({ juego, onAddToCart }: GameCardProps) {
@@ -14,7 +14,7 @@ export default function GameCard({ juego, onAddToCart }: GameCardProps) {
     <div className="group relative glass rounded-[2rem] overflow-hidden transition-all duration-500 hover:shadow-[0_20px_50px_rgba(0,0,0,0.5)] border-white/5 hover:border-neon/30">
       {/* Target area for hover effect */}
       <div className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-black to-transparent opacity-60 group-hover:opacity-80 transition-opacity z-10 pointer-events-none" />
-      
+
       {/* Genre Badge */}
       <div className="absolute top-4 left-4 z-20">
         <span className="px-3 py-1 glass rounded-full text-[10px] font-black uppercase tracking-widest text-white/80 border-white/10 group-hover:border-neon/40 group-hover:text-neon transition-colors">
