@@ -19,7 +19,7 @@
     "isolatedModules": true,
     "paths": {
       "@/*": [
-        "./*"
+        "./src/*"
       ]
     },
     "incremental": true,

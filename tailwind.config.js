@@ -1,18 +1,19 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
-    './app/**/*.{js,ts,jsx,tsx,mdx}',
-    './components/**/*.{js,ts,jsx,tsx,mdx}',
+    './src/**/*.{js,ts,jsx,tsx,mdx}',
   ],
   theme: {
     extend: {
       colors: {
-        primary: '#667eea',
-        secondary: '#764ba2',
-        accent: '#ff6b6b',
+        base: '#111111',
+        neon: '#CCFF00',
+        card: '#4F385C',
+        muted: '#C8BD2E',
       },
       backgroundImage: {
-        'gradient-primary': 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+        'gradient-primary': 'linear-gradient(135deg, #4F385C 0%, #2D1F3D 100%)',
+        'gradient-neon': 'linear-gradient(135deg, #CCFF00 0%, #A3D900 100%)',
       },
       fontSize: {
         xs: '0.75rem',
@@ -31,6 +32,10 @@ module.exports = {
       fontFamily: {
         orbitron: ['Orbitron', 'sans-serif'],
         mono: ['Space Mono', 'monospace'],
+      },
+      boxShadow: {
+        'neon': '0 0 20px rgba(204, 255, 0, 0.5)',
+        'neon-sm': '0 0 10px rgba(204, 255, 0, 0.3)',
       },
     },
   },
